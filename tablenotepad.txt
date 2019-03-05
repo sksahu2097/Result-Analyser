@@ -1,0 +1,177 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+psql (9.4.0)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# \c project;
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+You are now connected to database "project" as user "postgres".
+project=# select * from login;
+ user_name | password
+-----------+----------
+ admin     | password
+(1 row)
+
+
+project=# select * from dept;
+ did | dname | dcollege | no_of_courses | no_of_teachers | no_of_student | no_of
+_boys | no_of_girls
+-----+-------+----------+---------------+----------------+---------------+------
+------+-------------
+   1 | comp  | wadia    |             5 |              5 |            50 |
+   25 |          25
+(1 row)
+
+
+project=# create table teacher(tid numeric primary key,did numeric primary key,t
+itle text,tname text,tmobile text,tland_line text,tdesg text,temail1 text,temail
+2 text,tbirth_date text,tjoining_date text,texp numeric,tfile text,tgender text,
+taddress text);
+ERROR:  multiple primary keys for table "teacher" are not allowed
+LINE 1: ...table teacher(tid numeric primary key,did numeric primary ke...
+                                                             ^
+project=# create table teacher(tid numeric primary key,did numeric references de
+pt,title text,tname text,tmobile text,tland_line text,tdesg text,temail1 text,te
+mail2 text,tbirth_date text,tjoining_date text,texp numeric,tfile text,tgender t
+ext,taddress text);
+CREATE TABLE
+project=# select * from teacher;
+ tid | did | title | tname | tmobile | tland_line | tdesg | temail1 | temail2 |
+tbirth_date | tjoining_date | texp | tfile | tgender | taddress
+-----+-----+-------+-------+---------+------------+-------+---------+---------+-
+------------+---------------+------+-------+---------+----------
+(0 rows)
+
+
+project=# create table class(cname text primary key,did numeric references dept,
+c_no_of_stud numeric);
+CREATE TABLE
+project=# select * from class;
+ cname | did | c_no_of_stud
+-------+-----+--------------
+(0 rows)
+
+
+project=# create table subject(sname_full text,scode text primary key,cname text
+references class,sname_short text,tid numeric refrences teacher,stitle text);
+ERROR:  syntax error at or near "class"
+LINE 1: ... text,scode text primary key,cname textreferences class,snam...
+                                                             ^
+project=# create table subject(sname_full text,scode text primary key,cname text
+ references class,sname_short text,tid numeric refrences teacher,stitle text);
+ERROR:  syntax error at or near "refrences"
+LINE 1: ...ext references class,sname_short text,tid numeric refrences ...
+                                                             ^
+project=# create table subject(sname_full text,scode text primary key,cname text references class,sname_short text,tid numeric refrences teacher,stitle text);
+ERROR:  syntax error at or near "refrences"
+LINE 1: ...ext references class,sname_short text,tid numeric refrences ...
+                                                             ^
+project=# create table subject(sname_full text,scode text primary key,cname textreferences class,sname_short text,tid numeric refrences teacher,stitle text);
+ERROR:  syntax error at or near "class"
+LINE 1: ... text,scode text primary key,cname textreferences class,snam...
+                                                             ^
+project=# create table subject(sname_full text,scode text primary key,cname text references class,sname_short text,tid numeric refrences teacher,stitle text);
+ERROR:  syntax error at or near "refrences"
+LINE 1: ...ext references class,sname_short text,tid numeric refrences ...
+                                                             ^
+project=# create table subject(sname_full text,scode text primary key,cname text references class,sname_short text,tid numeric references teacher,stitle text);
+CREATE TABLE
+project=# select * from subject;
+ sname_full | scode | cname | sname_short | tid | stitle
+------------+-------+-------+-------------+-----+--------
+(0 rows)
+
+
+project=# select * from subject;
+ sname_full | scode | cname | sname_short | tid | stitle
+------------+-------+-------+-------------+-----+--------
+(0 rows)
+
+
+project=# select * from teacher;
+ tid | did | title | tname | tmobile | tland_line | tdesg | temail1 | temail2 | tbirth_date | tjoining_date | texp | tfile | tgender | taddress
+-----+-----+-------+-------+---------+------------+-------+---------+---------+-------------+---------------+------+-------+---------+----------
+(0 rows)
+
+
+project=# create table stud(rno numeric primary key,cname text references class,sname text,p_addr text,t_addr text,c_year numeric,usno text,mobile text,email text,blood text,bd text,ctg text,prn numer
+ic gender text);
+ERROR:  syntax error at or near "gender"
+LINE 1: ...mail text,blood text,bd text,ctg text,prn numeric gender tex...
+                                                             ^
+project=# create table stud(rno numeric primary key,cname text references class,sname text,p_addr text,t_addr text,c_year numeric,usno text,mobile text,email text,blood text,bd text,ctg text,prn numer
+ic, gender text);
+CREATE TABLE
+project=# select * from stud;
+ rno | cname | sname | p_addr | t_addr | c_year | usno | mobile | email | blood | bd | ctg | prn | gender
+-----+-------+-------+--------+--------+--------+------+--------+-------+-------+----+-----+-----+--------
+(0 rows)
+
+
+project=# create table stud_sub(scode text references subject,stitle text references subject,rno numeric references stud,cname text references class,marks numeric);
+CREATE TABLE
+project=# select * from stud_sub;
+ scode | stitle | rno | cname | marks
+-------+--------+-----+-------+-------
+(0 rows)
+
+
+project=# select * from dept;
+ did | dname | dcollege  | no_of_courses | no_of_teachers | no_of_student | no_of_boys | no_of_girls
+-----+-------+-----------+---------------+----------------+---------------+------------+-------------
+   1 | comp  | wadia     |             5 |              0 |             0 |          0 |           0
+   2 | IT    | nowrosjee |             5 |              6 |             0 |          0 |           0
+(2 rows)
+
+
+project=# \d
+          List of relations
+ Schema |   Name   | Type  |  Owner
+--------+----------+-------+----------
+ public | class    | table | postgres
+ public | dept     | table | postgres
+ public | login    | table | postgres
+ public | stud     | table | postgres
+ public | stud_sub | table | postgres
+ public | subject  | table | postgres
+ public | teacher  | table | postgres
+(7 rows)
+
+
+project=# select * from class;
+ cname | did | c_no_of_stud
+-------+-----+--------------
+(0 rows)
+
+
+project=# select * from dept;
+ did | dname | dcollege  | no_of_courses | no_of_teachers | no_of_student | no_of_boys | no_of_girls
+-----+-------+-----------+---------------+----------------+---------------+------------+-------------
+   1 | comp  | wadia     |             5 |              0 |             0 |          0 |           0
+   2 | IT    | nowrosjee |             5 |              0 |             0 |          0 |           0
+(2 rows)
+
+
+project=# select * from stud_sub
+project-# ;
+ scode | stitle | rno | cname | marks
+-------+--------+-----+-------+-------
+(0 rows)
+
+
+project=# select * from teacher;
+ tid | did |  title   | tname  |  tmobile   | tland_line |  tdesg  |      temail1       |      temail2       | tbirth_date | tjoining_date | texp |    tfile     | tgender | taddress
+-----+-----+----------+--------+------------+------------+---------+--------------------+--------------------+-------------+---------------+------+--------------+---------+----------
+   1 |   1 | teaching | sujata | 9922450472 | 678        | teacher | sujata12@gmail.com | sujata12@gmail.com | 2/4/1986    | 6/6/2000      |    2 | This is file | F       | gnashik
+(1 row)
+
+
+project=# \c project;
