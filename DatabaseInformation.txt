@@ -59,28 +59,6 @@ project=# select * from class;
 -------+-----+--------------
 (0 rows)
 
-
-project=# create table subject(sname_full text,scode text primary key,cname text
-references class,sname_short text,tid numeric refrences teacher,stitle text);
-ERROR:  syntax error at or near "class"
-LINE 1: ... text,scode text primary key,cname textreferences class,snam...
-                                                             ^
-project=# create table subject(sname_full text,scode text primary key,cname text
- references class,sname_short text,tid numeric refrences teacher,stitle text);
-ERROR:  syntax error at or near "refrences"
-LINE 1: ...ext references class,sname_short text,tid numeric refrences ...
-                                                             ^
-project=# create table subject(sname_full text,scode text primary key,cname text references class,sname_short text,tid numeric refrences teacher,stitle text);
-ERROR:  syntax error at or near "refrences"
-LINE 1: ...ext references class,sname_short text,tid numeric refrences ...
-                                                             ^
-project=# create table subject(sname_full text,scode text primary key,cname textreferences class,sname_short text,tid numeric refrences teacher,stitle text);
-ERROR:  syntax error at or near "class"
-LINE 1: ... text,scode text primary key,cname textreferences class,snam...
-                                                             ^
-project=# create table subject(sname_full text,scode text primary key,cname text references class,sname_short text,tid numeric refrences teacher,stitle text);
-ERROR:  syntax error at or near "refrences"
-LINE 1: ...ext references class,sname_short text,tid numeric refrences ...
                                                              ^
 project=# create table subject(sname_full text,scode text primary key,cname text references class,sname_short text,tid numeric references teacher,stitle text);
 CREATE TABLE
@@ -100,13 +78,7 @@ project=# select * from teacher;
  tid | did | title | tname | tmobile | tland_line | tdesg | temail1 | temail2 | tbirth_date | tjoining_date | texp | tfile | tgender | taddress
 -----+-----+-------+-------+---------+------------+-------+---------+---------+-------------+---------------+------+-------+---------+----------
 (0 rows)
-
-
-project=# create table stud(rno numeric primary key,cname text references class,sname text,p_addr text,t_addr text,c_year numeric,usno text,mobile text,email text,blood text,bd text,ctg text,prn numer
-ic gender text);
-ERROR:  syntax error at or near "gender"
-LINE 1: ...mail text,blood text,bd text,ctg text,prn numeric gender tex...
-                                                             ^
+                                                             
 project=# create table stud(rno numeric primary key,cname text references class,sname text,p_addr text,t_addr text,c_year numeric,usno text,mobile text,email text,blood text,bd text,ctg text,prn numer
 ic, gender text);
 CREATE TABLE
